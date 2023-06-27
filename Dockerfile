@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 RUN python3 -m pip install protobuf==3.20.*
 
 # clone repo
-RUN git clone https://github.com/ANTLab-polimi/xapp-oai.git /xapp-oai
+RUN git clone https://github.com/tugayozel/xapp-oai.git /xapp-oai
 WORKDIR /xapp-oai
 
 # checkout mrn-base
