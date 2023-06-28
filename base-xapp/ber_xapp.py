@@ -19,9 +19,9 @@ def send_indication_request():
     xapp_control_ricbypass.send_to_socket(buf)
 
 def control_function(ran_ind_resp):
-    for ue_info in ran_ind_resp.param_map[1].ue_list:
+    for ue_info in ran_ind_resp.param_map[1].ue_list.ue_info:
         print(ue_info)
-        
+
 def main():    
 
     send_indication_request()
