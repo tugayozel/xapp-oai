@@ -9,7 +9,7 @@ def main():
 
     decision = input("Change MCS? (y/n)")
     if decision == "y":
-        prop_1 = RAN_mcs_type.SIXYFOUR_QAM
+        prop_1 = RAN_mcs_type.SIXTYFOUR_QAM
     else:
         prop_1 = RAN_mcs_type.SIXTEEN_QAM
     #prop_2 = float(input("Enter prop_2 (float)"))
