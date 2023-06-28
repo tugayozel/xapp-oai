@@ -7,12 +7,12 @@ def main():
     rnti = input("Enter RNTI:")
     rnti = int(rnti)
 
-    prop_1 = input("Is prop_1 true? (y/n)")
-    if prop_1 == "y":
-        prop_1 = True
+    decision = input("Change MCS? (y/n)")
+    if decision == "y":
+        prop_1 = RAN_mcs_type.SIXYFOUR_QAM
     else:
-        prop_1 = False
-    prop_2 = float(input("Enter prop_2 (float)"))
+        prop_1 = RAN_mcs_type.SIXTEEN_QAM
+    #prop_2 = float(input("Enter prop_2 (float)"))
 
     print("Sending control message")
     master_mess = RAN_message()
@@ -31,7 +31,7 @@ def main():
     ue_info_message = ue_info_m()
     ue_info_message.rnti = rnti
     ue_info_message.prop_1 = prop_1
-    ue_info_message.prop_2 = prop_2
+    #ue_info_message.prop_2 = prop_2
 
     # put info message into repeated field of ue list message
     ue_list_message.ue_info.extend([ue_info_message])
