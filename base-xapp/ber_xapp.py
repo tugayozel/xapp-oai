@@ -62,7 +62,7 @@ def send_control_request(labeled_ues):
 def control_function(ran_ind_resp):
     labeled_ues = {}
     print("Employing Control Function")
-    
+
     for ue_info in ran_ind_resp.param_map[1].ue_list.ue_info:
         rnti = ue_info.rnti
         meas_type_1 = ue_info.meas_type_1
@@ -93,7 +93,7 @@ def main():
         ran_ind_resp = RAN_indication_response()
         ran_ind_resp.ParseFromString(r_buf)
         print(ran_ind_resp)
-        print(control_function(ran_ind_resp))
+        control_function(ran_ind_resp)
         sleep(4)
         send_indication_request()
 
