@@ -56,9 +56,9 @@ def control_function(ran_ind_resp):
     labeled_ues = {}
     
     for ue_info in ran_ind_resp.param_map[1].ue_list.ue_info:
-        rnti = ue_info.rnti
-        meas_type_1 = ue_info.meas_type_1
-        prop_1 = ue_info.prop_1
+        rnti = int(ue_info.rnti)
+        meas_type_1 = float(ue_info.meas_type_1)
+        prop_1 = str(ue_info.prop_1)
         
         if prop_1 == 'SIXTEEN_QAM':
             label = meas_type_1 < 0.02653260982614602
