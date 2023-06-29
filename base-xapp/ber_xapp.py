@@ -51,9 +51,30 @@ def send_control_request(rnti, mcs_type):
     buf = master_mess.SerializeToString()
     xapp_control_ricbypass.send_to_socket(buf)
 
+
 def control_function(ran_ind_resp):
+    labeled_ues = {}
+    
     for ue_info in ran_ind_resp.param_map[1].ue_list.ue_info:
-        print(ue_info)
+        rnti = ue_info.rnti
+        meas_type_1 = ue_info.meas_type_1
+        prop_1 = ue_info.prop_1
+        
+        if prop_1 == 'SIXTEEN_QAM':
+            label = meas_type_1 < 0.02653260982614602
+        elif prop_1 == 'SIXTYFOUR_QAM':
+            label = meas_type_1 > 0.04189230318126343
+        else:
+            label = None
+        
+        labeled_ues[rnti] = {
+            'rnti': rnti,
+            'meas_type_1': meas_type_1,
+            'prop_1': prop_1,
+            'label': label
+        }
+    
+    return labeled_ues
 
 def main():    
 
@@ -64,8 +85,8 @@ def main():
         ran_ind_resp = RAN_indication_response()
         ran_ind_resp.ParseFromString(r_buf)
         print(ran_ind_resp)
-        control_function(ran_ind_resp)
-        sleep(1)
+        print(control_function(ran_ind_resp))
+        sleep(4)
         send_indication_request()
 
 
