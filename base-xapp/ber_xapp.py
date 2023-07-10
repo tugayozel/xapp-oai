@@ -23,7 +23,7 @@ def send_control_request(labeled_ues):
     # ue list message 
     ue_list_message = ue_list_m()
     ue_list_message.connected_ues = 1 # this will not be processed by the gnb, it can be anything
-
+    counter = 0
     for ue in labeled_ues.values():
         if(ue["label"]):
             # ue info message
@@ -31,11 +31,15 @@ def send_control_request(labeled_ues):
             ue_info_message.rnti = ue["rnti"]
             if(ue["prop_1"] == RAN_mcs_type.SIXTEEN_QAM):
                 ue_info_message.prop_1 = RAN_mcs_type.SIXTYFOUR_QAM
+                print(f"For RNTI = {ue_info_message.rnti}, the MCS has been changed from 16QAM to 64QAM")
             else:
                 ue_info_message.prop_1 = RAN_mcs_type.SIXTEEN_QAM
+                print(f"For RNTI = {ue_info_message.rnti}, the MCS has been changed from 64QAM to 16QAM")
 
             # put info message into repeated field of ue list message
             ue_list_message.ue_info.extend([ue_info_message])
+            counter += 1
+    print(f"Number of UEs with MCS changed: {counter}")
 
     print("Sending control message")
     master_mess = RAN_message()
@@ -54,7 +58,7 @@ def send_control_request(labeled_ues):
     # finalize and send
     inner_mess.target_param_map.extend([ue_list_control_element])
     master_mess.ran_control_request.CopyFrom(inner_mess)
-    print(master_mess)
+    #print(master_mess)
     buf = master_mess.SerializeToString()
     xapp_control_ricbypass.send_to_socket(buf)
 
