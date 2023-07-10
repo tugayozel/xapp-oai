@@ -77,10 +77,10 @@ def control_function(ran_ind_resp):
         
         if prop_1 == RAN_mcs_type.SIXTEEN_QAM:
             label = meas_type_1 < 0.02653260982614602
-            change = True
+            change = label
         elif prop_1 == RAN_mcs_type.SIXTYFOUR_QAM:
             label = meas_type_1 > 0.04189230318126343
-            change = True
+            change = label
         else:
             label = None
         
