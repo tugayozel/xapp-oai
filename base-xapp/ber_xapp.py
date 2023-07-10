@@ -3,7 +3,7 @@ from e2sm_proto import *
 from time import sleep
 
 def send_indication_request():
-    print("Encoding ric monitoring request")
+    print("Sending indication request")
     
     # external message
     master_mess = RAN_message()
@@ -17,6 +17,7 @@ def send_indication_request():
     master_mess.ran_indication_request.CopyFrom(inner_mess)
     buf = master_mess.SerializeToString()
     xapp_control_ricbypass.send_to_socket(buf)
+    print("\n")
 
 def send_control_request(labeled_ues):
 
@@ -40,6 +41,7 @@ def send_control_request(labeled_ues):
             ue_list_message.ue_info.extend([ue_info_message])
             counter += 1
     print(f"Number of UEs with MCS changed: {counter}")
+    print("\n")
 
     print("Sending control message")
     master_mess = RAN_message()
@@ -65,7 +67,8 @@ def send_control_request(labeled_ues):
 
 def control_function(ran_ind_resp):
     labeled_ues = {}
-    print("Employing Control Function")
+    change = False
+    print("Employing Control Function\n")
 
     for ue_info in ran_ind_resp.param_map[1].ue_list.ue_info:
         rnti = ue_info.rnti
@@ -74,8 +77,10 @@ def control_function(ran_ind_resp):
         
         if prop_1 == RAN_mcs_type.SIXTEEN_QAM:
             label = meas_type_1 < 0.02653260982614602
+            change = True
         elif prop_1 == RAN_mcs_type.SIXTYFOUR_QAM:
             label = meas_type_1 > 0.04189230318126343
+            change = True
         else:
             label = None
         
@@ -85,8 +90,10 @@ def control_function(ran_ind_resp):
             'prop_1': prop_1,
             'label': label
         }
-    
-    send_control_request(labeled_ues)
+    if(change):
+        send_control_request(labeled_ues)
+    else:
+        print("No UEs found to be changed\n")
 
 def main():    
 
